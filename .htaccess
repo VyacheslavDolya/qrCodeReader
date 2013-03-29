@@ -1,0 +1,9 @@
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /qrCodeReader/index.php?$1 [L]
+
+#AuthType Basic
+#AuthName "Please Log In"
+#AuthUserFile D:\xampp\htdocs\qrCodeReader\.htpasswd
+#require valid-user
