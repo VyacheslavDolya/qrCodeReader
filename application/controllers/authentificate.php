@@ -113,33 +113,37 @@ class Authentificate extends CI_Controller
     public function output($activity)
     {
         header('Content-type: application/json');
-        switch ($activity)
+        $output = array();
+        if(!empty($this->error))
         {
-            case 'sign':
-                $output = array(
-                    'error' => $this->error,
-                    'user' => empty($this->error) ? $this->user : null,
-                );
-                break;
-            case 'add':
-                $output = array(
-                    'error' => $this->error,
-                    'record' => empty($this->error) ? $this->record : null,
-                );
-                break;
-            case 'delete':
-                $output = array(
-                    'error' => $this->error,
-                );
-                break;
-            case 'history':
-                $output = array(
-                    'error' => $this->error,
-                    'history' => empty($this->error) ? $this->history : null,
-                    'meta' => empty($this->error) ? $this->meta : null,
-                    'deleted' => empty($this->error) ? $this->deleted : null,
-                );
-                break;
+            $output['error'] = $this->error;
+        }
+        else
+        {
+            switch ($activity)
+            {
+                case 'sign':
+                    $output = array(
+                        'user' => $this->user,
+                    );
+                    break;
+                case 'add':
+                    $output = array(
+                        'record' => $this->record,
+                    );
+                    break;
+                case 'delete':
+                    $output = array(
+                    );
+                    break;
+                case 'history':
+                    $output = array(
+                        'history' => $this->history,
+                        'meta' => $this->meta,
+                        'deleted' => $this->deleted,
+                    );
+                    break;
+            }
         }
         echo json_encode($output);
         die();
