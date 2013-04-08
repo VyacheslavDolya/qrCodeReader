@@ -28,13 +28,6 @@ class Add_record extends Authentificate
      */
     public function index()
     {
-        $_POST += array(
-            'date' => '234356576',
-            'latitude' => '3244432432',
-            'longitude' => '34534543',
-            'code' => 'sdfdbdfg43try',
-            'type' => '1',
-        );
         $this->lang->load('validation');
         $this->load->library('validation');
         $this->validation->set_rules('date', 'Date', 'required|numeric');

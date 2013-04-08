@@ -28,14 +28,6 @@ class Authentificate extends CI_Controller
 
     public function __construct()
     {
-        $_POST = array(
-            'is_facebook_user' => '0',
-            'user_email' => 'ebalda@gmail.com',
-            'user_password' => '1234567',
-            'user_first_name' => 'Test',
-            'user_last_name' => 'Test',
-            
-        );
         parent::__construct();
         $this->_preValidate();
     }
