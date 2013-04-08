@@ -16,14 +16,20 @@ class Type extends CI_Model
 
     /**
      * Get Type By Description
-     * @param string $type description of type
+     * @param string $typeId description of type
      * @return array result from database
      */
-    public function getType($type)
+    public function getType($typeId)
     {
-        return $this->db->get_where($this->tableName, array(
-                    'type_description' => $type,
-                ))->row_array();
+        return $this->db->get_where($this->tableName, array('type_id' => $typeId,))->row_array();
     }
 
+    /**
+     * Get Types
+     * @return array result from database
+     */
+    public function get()
+    {
+        return $this->db->get($this->tableName)->result_array();
+    }
 }

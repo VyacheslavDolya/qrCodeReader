@@ -12,12 +12,13 @@ if (!defined('BASEPATH'))
 class Authentificate extends CI_Controller
 {
 
-    protected $error;
-    protected $user;
-    protected $meta;
-    protected $deleted;
-    protected $record;
-    protected $history;
+    protected $error = array();
+    protected $user = array();
+    protected $meta = array();
+    protected $deleted = array();
+    protected $record = array();
+    protected $history = array();
+    protected $types = array();
     public $activity = 'sign';
     public $is_facebook_user;
     public $facebook_user_id;
@@ -27,6 +28,14 @@ class Authentificate extends CI_Controller
 
     public function __construct()
     {
+        $_POST = array(
+            'is_facebook_user' => '0',
+            'user_email' => 'ebalda@gmail.com',
+            'user_password' => '1234567',
+            'user_first_name' => 'Test',
+            'user_last_name' => 'Test',
+            
+        );
         parent::__construct();
         $this->_preValidate();
     }
@@ -143,6 +152,11 @@ class Authentificate extends CI_Controller
                         'deleted' => $this->deleted,
                     );
                     break;
+                case 'types':
+                    $output = array(
+                        'types' => $this->types,
+                    );
+                    break;
             }
         }
         echo json_encode($output);
@@ -185,6 +199,9 @@ class Authentificate extends CI_Controller
                 break;
             case 'deleted':
                 $this->deleted = $value;
+                break;
+            case 'types':
+                $this->types = $value;
                 break;
         }
     }

@@ -28,6 +28,13 @@ class Add_record extends Authentificate
      */
     public function index()
     {
+        $_POST += array(
+            'date' => '234356576',
+            'latitude' => '3244432432',
+            'longitude' => '34534543',
+            'code' => 'sdfdbdfg43try',
+            'type' => '1',
+        );
         $this->lang->load('validation');
         $this->load->library('validation');
         $this->validation->set_rules('date', 'Date', 'required|numeric');
@@ -60,7 +67,9 @@ class Add_record extends Authentificate
             {
                 unset($insert['user_id']);
                 unset($insert['type_id']);
-                $insert['type'] = $inputType;
+                $insert['type'] = array(
+                    'type_id' => $this->recordType,
+                );
                 $insert['record_id'] = $result['record_id'];
                 $insert['user'] = $this->user;
                 $this->setParam('record', $insert);
