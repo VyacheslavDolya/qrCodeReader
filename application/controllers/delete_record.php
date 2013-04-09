@@ -40,7 +40,7 @@ class Delete_record extends Authentificate
             {
                 foreach ($delete as $del)
                 {
-                    if ($this->validation->is_natural($del))
+                    if ($this->validation->integer($del))
                     {
                         $remove[] = $del;
                     }
@@ -48,7 +48,7 @@ class Delete_record extends Authentificate
             }
             else
             {
-                if ($this->validation->is_natural($del))
+                if ($this->validation->integer($delete))
                 {
                     $remove[] = $delete;
                 }
@@ -61,6 +61,11 @@ class Delete_record extends Authentificate
             {
                 $this->load->model('deleted', 'deleted_model');
                 $this->deleted_model->remove($this->user['user_id'], $remove);
+                $deleted = $this->deleted_model->getRecords($this->user['user_id']);
+                if (!empty($deleted))
+                {
+                    $this->setParam('deleted', $deleted);
+                }
             }
         }
         $this->output($this->activity);

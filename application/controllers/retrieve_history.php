@@ -38,14 +38,18 @@ class Retrieve_history extends Authentificate
         foreach($rawHistory as $raw)
         {
                 $history[] = array(
-                    'record_id' => $raw['record_id'],
-                    'latitude' => $raw['latitude'],
-                    'longitude' => $raw['longitude'],
-                    'code' => $raw['code'],
-                    'date' => $raw['date'],
-                    'type' => array(
-                        'type_id' => $raw['record_id'],
-                        ),
+                    'record_id'     => $raw['record_id'],
+                    'latitude'      => $raw['latitude'],
+                    'longitude'     => $raw['longitude'],
+                    'code'          => $raw['code'],
+                    'date'          => $raw['date'],
+                    'record_info'   => $raw['record_info'],
+                    'type'          => array(
+                        'type_id' => $raw['type_id'],
+                    ),
+                    'user'          => array(
+                        'user_id' => $this->user['user_id'],
+                    ),
                 );
         }
  

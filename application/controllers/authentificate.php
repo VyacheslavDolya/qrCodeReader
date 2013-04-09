@@ -135,6 +135,7 @@ class Authentificate extends CI_Controller
                     break;
                 case 'delete':
                     $output = array(
+                        'deleted' => $this->deleted,
                     );
                     break;
                 case 'history':

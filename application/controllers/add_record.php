@@ -35,6 +35,7 @@ class Add_record extends Authentificate
         $this->validation->set_rules('longitude', 'Longitude', 'required|numeric');
         $this->validation->set_rules('code', 'Code', 'required|max_length[1024]');
         $this->validation->set_rules('type', 'Type', 'required|callback_check_record_type');
+        $this->validation->set_rules('record_info', 'Record Info', 'required|max_length[256]');
 
         if ($this->validation->run() == FALSE)
         {
@@ -44,9 +45,9 @@ class Add_record extends Authentificate
         }
         else
         {
-            $inputType = $this->input->post('type');
             $insert = array(
                 'date' => $this->input->post('date'),
+                'record_info' => $this->input->post('record_info'),
                 'latitude' => $this->input->post('latitude'),
                 'longitude' => $this->input->post('longitude'),
                 'code' => $this->input->post('code'),
@@ -64,7 +65,9 @@ class Add_record extends Authentificate
                     'type_id' => $this->recordType,
                 );
                 $insert['record_id'] = $result['record_id'];
-                $insert['user'] = $this->user;
+                $insert['user'] = array(
+                    'user_id' => $this->user['user_id'],
+                );
                 $this->setParam('record', $insert);
             }
             else
