@@ -45,7 +45,7 @@ class History extends CI_Model
         $conditions = array('user_id' => $userId);
         if (!empty($updated_gt))
         {
-            $conditions['updated_gt'] = $updated_gt;
+            $conditions['date > '] = $updated_gt;
         }
         return $this->db->get_where($this->tableName, $conditions, $count, $offset)->result_array();
     }
@@ -62,7 +62,7 @@ class History extends CI_Model
         $conditions = array('user_id' => $userId);
         if (!empty($updated_gt))
         {
-            $conditions['updated_gt'] = $updated_gt;
+            $conditions['date > '] = $updated_gt;
         }
         $query = $this->db->get_where($this->tableName, $conditions, null, $offset);
         return $query->num_rows();
