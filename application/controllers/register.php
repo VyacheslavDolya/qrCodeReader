@@ -39,12 +39,15 @@ class Register extends Authentificate
         $this->load->library('validation');
         if ($this->is_facebook_user)
         {
-            $this->validation->set_rules('facebook_user_id', 'Facebook User Id', 'required|callback_facebook_user_id_exist');
+            $this->validation->set_rules('facebook_user_id', 'Facebook User Id', 'required||max_length[16]|callback_facebook_user_id_exist');
             $this->validation->set_rules('facebook_username', 'Facebook User Name', 'required');
+        }
+        else
+        {
+            $this->validation->set_rules('user_password', 'User Password', 'required|max_length[256]');
         }
 
         $this->validation->set_rules('user_email', 'User Email', 'required|valid_email|callback_user_email_exist|max_length[256]');
-        $this->validation->set_rules('user_password', 'User Passwordl', 'required|max_length[256]');
         $this->validation->set_rules('user_first_name', 'User First Name', 'required|max_length[256]');
         $this->validation->set_rules('user_last_name', 'User Last Name', 'required|max_length[256]');
 
@@ -73,11 +76,11 @@ class Register extends Authentificate
         {
             $this->facebook_user_id = $this->is_facebook_user ? $this->input->post('facebook_user_id') : 0;
             $this->facebook_username = $this->is_facebook_user ? $this->input->post('facebook_username') : '';
-            $this->locale = $this->locale ? $this->input->post('locale') : '';
-            $this->birthday = $this->birthday ? $this->input->post('birthday') : 0;
-            $this->gender = $this->gender ? $this->input->post('gender') : 0;
+            $this->locale = $this->input->post('locale') ? $this->input->post('locale') : '';
+            $this->birthday = $this->input->post('birthday') ? $this->input->post('birthday') : 0;
+            $this->gender = $this->input->post('gender') ? $this->input->post('gender') : 0;
             $this->user_email = $this->input->post('user_email');
-            $this->user_password = $this->input->post('user_password');
+            $this->user_password = ! $this->is_facebook_user ? $this->input->post('user_password') : '';
             $this->user_first_name = $this->input->post('user_first_name');
             $this->user_last_name = $this->input->post('user_last_name');
         }

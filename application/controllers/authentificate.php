@@ -69,7 +69,7 @@ class Authentificate extends CI_Controller
         $this->load->library('validation');
         if ($this->is_facebook_user)
         {
-            $this->validation->set_rules('facebook_user_id', 'Facebook User Id', 'required|integer|callback_facebook_user_id_does_not_exist');
+            $this->validation->set_rules('facebook_user_id', 'Facebook User Id', 'required||max_length[16]|callback_facebook_user_id_does_not_exist');
         }
         else
         {
