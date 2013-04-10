@@ -65,7 +65,7 @@ class Register extends Authentificate
 
         if ($this->validation->run() == FALSE)
         {
-            $this->setError(500, $this->validation->error_string());
+            $this->setError($this->code, $this->validation->error_string());
             $this->output($this->activity);
             die();
         }
@@ -110,7 +110,7 @@ class Register extends Authentificate
         else
         {
             $this->lang->load('validation');
-            $this->setError(501, $this->lang->line('save_failed'));
+            $this->setError($this->code, $this->lang->line('save_failed'));
         }
         $this->output($this->activity);
     }
@@ -127,6 +127,7 @@ class Register extends Authentificate
         $find = $this->users->checkEmailExistings($email);
         if (!empty($find))
         {
+            $this->code = 502;
             $this->validation->set_message('user_email_exist', $this->lang->line('user_email_exist'));
             return false;
         }
@@ -145,6 +146,7 @@ class Register extends Authentificate
         $find = $this->users->checkFacebookUserIdExistings($facebook_user_id);
         if (!empty($find))
         {
+            $this->code = 504;
             $this->validation->set_message('facebook_user_id_exist', $this->lang->line('facebook_user_id_exist'));
             return false;
         }

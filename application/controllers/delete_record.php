@@ -31,7 +31,7 @@ class Delete_record extends Authentificate
         $delete = $this->input->post('delete');
         if (empty($delete))
         {
-            $this->setError(501, $this->lang->line('delete_is_required'));
+            $this->setError($this->code, $this->lang->line('delete_is_required'));
         }
         else
         {
@@ -55,7 +55,7 @@ class Delete_record extends Authentificate
             }
             if (empty($remove))
             {
-                $this->setError(501, $this->lang->line('delete_values_is_not_valid'));
+                $this->setError($this->code, $this->lang->line('delete_values_is_not_valid'));
             }
             else
             {

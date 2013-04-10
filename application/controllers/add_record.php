@@ -39,7 +39,7 @@ class Add_record extends Authentificate
 
         if ($this->validation->run() == FALSE)
         {
-            $this->setError(500, $this->validation->error_string());
+            $this->setError($this->code, $this->validation->error_string());
             $this->output($this->activity);
             die();
         }
@@ -72,7 +72,7 @@ class Add_record extends Authentificate
             }
             else
             {
-                $this->setError(501, $this->lang->line('add_record_failed'));
+                $this->setError($this->code, $this->lang->line('add_record_failed'));
             }
         }
 

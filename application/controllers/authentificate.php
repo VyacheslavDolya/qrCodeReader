@@ -24,6 +24,7 @@ class Authentificate extends CI_Controller
     public $facebook_user_id;
     public $user_email;
     public $user_password;
+    public $code = 500;
 
     public function __construct()
     {
@@ -35,7 +36,8 @@ class Authentificate extends CI_Controller
      * Pre Validate function for validation required params
      */
     private function _preValidate()
-    {$_POST = array(
+    {
+        /*$_POST = array(
         'is_facebook_user' => 1,
         'facebook_user_id' => '12345678',
         'facebook_username' => 'james',
@@ -43,12 +45,12 @@ class Authentificate extends CI_Controller
         'user_password' => '123456',
         'user_first_name' => 'bobby',
         'user_last_name' => 'statem',
-    );
+    );*/
         $this->load->library('validation');
         $this->validation->set_rules('is_facebook_user', 'is Facebook User', 'required|boolean');
         if ($this->validation->run() == FALSE)
         {
-            $this->setError(500, $this->validation->error_string());
+            $this->setError($this->code, $this->validation->error_string());
             $this->output($this->activity);
         }
         else
@@ -77,7 +79,7 @@ class Authentificate extends CI_Controller
         $this->validation->set_rules('user_email', 'User Email', 'required|valid_email|callback_user_email_does_not_exist');
         if ($this->validation->run() == FALSE)
         {
-            $this->setError(500, $this->validation->error_string());
+            $this->setError($this->code, $this->validation->error_string());
             $this->output($this->activity);
         }
         else
@@ -106,7 +108,7 @@ class Authentificate extends CI_Controller
             if (empty($this->user))
             {
                 $this->lang->load('validation');
-                $this->setError(501, $this->lang->line('no_such_user'));
+                $this->setError($this->code, $this->lang->line('no_such_user'));
                 $this->output($this->activity);
             }
         }
@@ -216,6 +218,7 @@ class Authentificate extends CI_Controller
         $find = $this->users->checkEmailExistings($email);
         if (empty($find))
         {
+            $this->code = 503;
             $this->validation->set_message('user_email_does_not_exist', $this->lang->line('user_email_does_not_exist'));
             return false;
         }
@@ -234,6 +237,7 @@ class Authentificate extends CI_Controller
         $find = $this->users->checkFacebookUserIdExistings($facebook_user_id);
         if (empty($find))
         {
+            $this->code = 505;
             $this->validation->set_message('facebook_user_id_does_not_exist', $this->lang->line('facebook_user_id_does_not_exist'));
             return false;
         }
