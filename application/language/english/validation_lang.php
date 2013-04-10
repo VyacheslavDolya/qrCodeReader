@@ -31,7 +31,5 @@ $lang['greater_than']                       = "The %s field must contain a numbe
 $lang['save_failed']                        = "Failed to save user data!";
 $lang['add_record_failed']                  = "Failed to add record!";
 $lang['no_such_user']                       = 'We have no such user.';
-$lang['new_token_exist']                    = 'New Token is already exist.';
-$lang['new_token_update_failed']            = 'Could not update new user token.';
 $lang['type_does_not_exist']                = 'Such Type does not exist.';
 $lang['delete_values_is_not_valid']         = "Delete values is not valid.";

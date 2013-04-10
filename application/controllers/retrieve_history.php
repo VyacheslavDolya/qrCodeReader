@@ -31,7 +31,7 @@ class Retrieve_history extends Authentificate
         $this->load->library('validation');
         $offset = $this->validation->is_natural($this->input->post('offset')) ? $this->input->post('offset') : 0;
         $count = $this->validation->is_natural($this->input->post('count')) ? $this->input->post('count') : 5;
-        $updated_gt = $this->validation->is_natural($this->input->post('updated_gt')) ? $this->input->post('updated_gt') : 0;
+        $updated_gt = $this->validation->integer($this->input->post('updated_gt')) ? $this->input->post('updated_gt') : 0;
         $this->load->model('history', 'history_model');
         $rawHistory = $this->history_model->get($this->user['user_id'], $count, $offset, $updated_gt);
         $history = array();

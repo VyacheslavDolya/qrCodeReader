@@ -17,6 +17,10 @@ class Register extends Authentificate
 
     public $user_first_name = '';
     public $user_last_name = '';
+    public $facebook_username = '';
+    public $locale = '';
+    public $birthday = '';
+    public $gender = 0;
     public $activity = 'sign';
 
     public function __construct()
@@ -36,13 +40,28 @@ class Register extends Authentificate
         if ($this->is_facebook_user)
         {
             $this->validation->set_rules('facebook_user_id', 'Facebook User Id', 'required|callback_facebook_user_id_exist');
-            $this->validation->set_rules('facebook_user_token', 'Facebook User Token', 'required');
+            $this->validation->set_rules('facebook_username', 'Facebook User Name', 'required');
         }
 
-        $this->validation->set_rules('user_email', 'User Email', 'required|valid_email|callback_user_email_exist');
-        $this->validation->set_rules('user_password', 'User Passwordl', 'required');
-        $this->validation->set_rules('user_first_name', 'User First Name', 'required');
-        $this->validation->set_rules('user_last_name', 'User Last Name', 'required');
+        $this->validation->set_rules('user_email', 'User Email', 'required|valid_email|callback_user_email_exist|max_length[256]');
+        $this->validation->set_rules('user_password', 'User Passwordl', 'required|max_length[256]');
+        $this->validation->set_rules('user_first_name', 'User First Name', 'required|max_length[256]');
+        $this->validation->set_rules('user_last_name', 'User Last Name', 'required|max_length[256]');
+
+        if($this->input->post('locale'))
+        {
+            $this->validation->set_rules('locale', 'User Last Name', 'required|max_length[256]');
+        }
+
+        if($this->input->post('birthday'))
+        {
+            $this->validation->set_rules('birthday', 'User Last Name', 'required|integer');
+        }
+
+        if($this->input->post('gender'))
+        {
+            $this->validation->set_rules('gender', 'User Last Name', 'required|boolean');
+        }
 
         if ($this->validation->run() == FALSE)
         {
@@ -53,7 +72,10 @@ class Register extends Authentificate
         else
         {
             $this->facebook_user_id = $this->is_facebook_user ? $this->input->post('facebook_user_id') : 0;
-            $this->facebook_user_token = $this->is_facebook_user ? $this->input->post('facebook_user_token') : '';
+            $this->facebook_username = $this->is_facebook_user ? $this->input->post('facebook_username') : '';
+            $this->locale = $this->locale ? $this->input->post('locale') : '';
+            $this->birthday = $this->birthday ? $this->input->post('birthday') : 0;
+            $this->gender = $this->gender ? $this->input->post('gender') : 0;
             $this->user_email = $this->input->post('user_email');
             $this->user_password = $this->input->post('user_password');
             $this->user_first_name = $this->input->post('user_first_name');
@@ -73,9 +95,12 @@ class Register extends Authentificate
                     'user_email' => $this->user_email,
                     'user_password' => $this->user_password,
                     'facebook_user_id' => $this->facebook_user_id,
-                    'facebook_user_token' => $this->facebook_user_token,
+                    'facebook_username' => $this->facebook_username,
                     'user_first_name' => $this->user_first_name,
                     'user_last_name' => $this->user_last_name,
+                    'locale' => $this->locale,
+                    'birthday' => $this->birthday,
+                    'gender' => $this->gender,
                 )
         );
         if (!empty($user))

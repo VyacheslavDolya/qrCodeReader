@@ -22,7 +22,6 @@ class Authentificate extends CI_Controller
     public $activity = 'sign';
     public $is_facebook_user;
     public $facebook_user_id;
-    public $facebook_user_token;
     public $user_email;
     public $user_password;
 
@@ -36,7 +35,15 @@ class Authentificate extends CI_Controller
      * Pre Validate function for validation required params
      */
     private function _preValidate()
-    {
+    {$_POST = array(
+        'is_facebook_user' => 1,
+        'facebook_user_id' => '12345678',
+        'facebook_username' => 'james',
+        'user_email' => 'james@co.uk',
+        'user_password' => '123456',
+        'user_first_name' => 'bobby',
+        'user_last_name' => 'statem',
+    );
         $this->load->library('validation');
         $this->validation->set_rules('is_facebook_user', 'is Facebook User', 'required|boolean');
         if ($this->validation->run() == FALSE)
@@ -61,14 +68,13 @@ class Authentificate extends CI_Controller
         if ($this->is_facebook_user)
         {
             $this->validation->set_rules('facebook_user_id', 'Facebook User Id', 'required|integer|callback_facebook_user_id_does_not_exist');
-            $this->validation->set_rules('facebook_user_token', 'Facebook User Token', 'required');
         }
         else
         {
-            $this->validation->set_rules('user_email', 'User Email', 'required|valid_email|callback_user_email_does_not_exist');
             $this->validation->set_rules('user_password', 'User Passwordl', 'required');
         }
 
+        $this->validation->set_rules('user_email', 'User Email', 'required|valid_email|callback_user_email_does_not_exist');
         if ($this->validation->run() == FALSE)
         {
             $this->setError(500, $this->validation->error_string());
@@ -76,19 +82,18 @@ class Authentificate extends CI_Controller
         }
         else
         {
+            $this->user_email = $this->input->post('user_email');
             if ($this->is_facebook_user)
             {
                 $this->facebook_user_id = $this->input->post('facebook_user_id');
-                $this->facebook_user_token = $this->input->post('facebook_user_token');
                 $attributes = array(
                     'is_facebook_user' => 1,
                     'facebook_user_id' => $this->facebook_user_id,
-                    'facebook_user_token' => $this->facebook_user_token,
+                    'user_email' => $this->user_email,
                 );
             }
             else
             {
-                $this->user_email = $this->input->post('user_email');
                 $this->user_password = $this->input->post('user_password');
                 $attributes = array(
                     'user_email' => $this->user_email,
