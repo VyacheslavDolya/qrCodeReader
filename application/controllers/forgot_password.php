@@ -11,7 +11,6 @@ require_once 'controller.php';
  */
 class Forgot_Password extends Controller
 {
-    public $user_email;
 
     public function __construct()
     {
