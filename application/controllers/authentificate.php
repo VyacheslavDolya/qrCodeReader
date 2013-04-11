@@ -2,29 +2,20 @@
 
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
-
+require_once 'controller.php';
 /**
  * Class Authentificate User
  * @author Vyacheslav Dolya <vyacheslav.dolya@gmail.com>
  * @package QR-BAR-CODE
  * @subpackage Controller
  */
-class Authentificate extends CI_Controller
+class Authentificate extends Controller
 {
-
-    protected $error = array();
-    protected $user = array();
-    protected $meta = array();
-    protected $deleted = array();
-    protected $record = array();
-    protected $history = array();
-    protected $types = array();
     public $activity = 'sign';
     public $is_facebook_user;
     public $facebook_user_id;
     public $user_email;
-    public $user_password;
-    public $code = 500;
+    public $user_password;  
 
     public function __construct()
     {
@@ -37,15 +28,15 @@ class Authentificate extends CI_Controller
      */
     private function _preValidate()
     {
-        /*$_POST = array(
-        'is_facebook_user' => 1,
-        'facebook_user_id' => '12345678',
-        'facebook_username' => 'james',
-        'user_email' => 'james@co.uk',
-        'user_password' => '123456',
-        'user_first_name' => 'bobby',
-        'user_last_name' => 'statem',
-    );*/
+//        $_POST = array(
+//        'is_facebook_user' => 1,
+//        'facebook_user_id' => '12345678',
+//        'facebook_username' => 'james',
+//        'user_email' => 'james@co.uk',
+//        'user_password' => '123456',
+//        'user_first_name' => 'bobby',
+//        'user_last_name' => 'statem',
+//        );
         $this->load->library('validation');
         $this->validation->set_rules('is_facebook_user', 'is Facebook User', 'required|boolean');
         if ($this->validation->run() == FALSE)
@@ -73,7 +64,7 @@ class Authentificate extends CI_Controller
         }
         else
         {
-            $this->validation->set_rules('user_password', 'User Passwordl', 'required');
+            $this->validation->set_rules('user_password', 'User Password', 'required');
         }
 
         $this->validation->set_rules('user_email', 'User Email', 'required|valid_email|callback_user_email_does_not_exist');
@@ -108,140 +99,11 @@ class Authentificate extends CI_Controller
             if (empty($this->user))
             {
                 $this->lang->load('validation');
+                $this->code = 506;
                 $this->setError($this->code, $this->lang->line('no_such_user'));
                 $this->output($this->activity);
             }
         }
-    }
-
-    /**
-     * basic function for server outpur request
-     * @param string $activity type of recent activity
-     */
-    public function output($activity)
-    {
-        header('Content-type: application/json');
-        $output = array();
-        if(!empty($this->error))
-        {
-            $output['error'] = $this->error;
-        }
-        else
-        {
-            switch ($activity)
-            {
-                case 'sign':
-                    $output = array(
-                        'user' => $this->user,
-                    );
-                    break;
-                case 'add':
-                    $output = array(
-                        'record' => $this->record,
-                    );
-                    break;
-                case 'delete':
-                    $output = array(
-                        'deleted' => $this->deleted,
-                    );
-                    break;
-                case 'history':
-                    $output = array(
-                        'history' => $this->history,
-                        'meta' => $this->meta,
-                        'deleted' => $this->deleted,
-                    );
-                    break;
-                case 'types':
-                    $output = array(
-                        'types' => $this->types,
-                    );
-                    break;
-            }
-        }
-        echo json_encode($output);
-        die();
-    }
-
-    /**
-     * function for setting protected variable error in a correct format
-     * @param int $code error code
-     * @param string $description error description
-     */
-    public function setError($code, $description)
-    {
-        $this->error = array(
-            'error_code' => $code,
-            'error_description' => $description
-        );
-    }
-
-    /**
-     * function for setting protected variables
-     * @param string $variable name of protected variable
-     * @param mixed $value value of protected variable
-     */
-    public function setParam($variable, $value)
-    {
-        switch ($variable)
-        {
-            case 'user':
-                $this->user = $value;
-                break;
-            case 'record':
-                $this->record = $value;
-                break;
-            case 'history':
-                $this->history = $value;
-                break;
-            case 'meta':
-                $this->meta = $value;
-                break;
-            case 'deleted':
-                $this->deleted = $value;
-                break;
-            case 'types':
-                $this->types = $value;
-                break;
-        }
-    }
-
-    /**
-     * callback function for checking email in database
-     * @param string $email user email address
-     * @return boolean
-     */
-    public function user_email_does_not_exist($email)
-    {
-        $this->lang->load('validation');
-        $this->load->model('users');
-        $find = $this->users->checkEmailExistings($email);
-        if (empty($find))
-        {
-            $this->code = 503;
-            $this->validation->set_message('user_email_does_not_exist', $this->lang->line('user_email_does_not_exist'));
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * callback function for checking facebook user id in database
-     * @param string $facebook_user_id facebook user id
-     * @return boolean
-     */
-    public function facebook_user_id_does_not_exist($facebook_user_id)
-    {
-        $this->lang->load('validation');
-        $this->load->model('users');
-        $find = $this->users->checkFacebookUserIdExistings($facebook_user_id);
-        if (empty($find))
-        {
-            $this->code = 505;
-            $this->validation->set_message('facebook_user_id_does_not_exist', $this->lang->line('facebook_user_id_does_not_exist'));
-            return false;
-        }
-        return true;
     }
 
 }
