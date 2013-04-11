@@ -5,7 +5,6 @@ if (!defined('BASEPATH'))
 
 /**
  * Class Validation
- * @author Vyacheslav Dolya <vyacheslav.dolya@gmail.com>
  * @package QR-BAR-CODE
  * @subpackage Library
  */

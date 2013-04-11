@@ -38,7 +38,7 @@ class Forgot_Password extends Controller
             $message .= "<p>Your login is:".$email."</p>";
             $message .= "<p>Your password is:".$find['user_password']."</p>";
             $message .= "<p>Thanks for using our app.</p>";
-            $message .= "<center>The Spire  team</center>";
+            $message .= "<center>The Spire team</center>";
             if($this->_sendNotification($email,$message))
             {
                 $this->output();
@@ -56,8 +56,9 @@ class Forgot_Password extends Controller
      */
     private function _sendNotification($emailAddress,$message = '')
     {
+        $brandInfo = $this->config->item('brandInfo');
         $this->load->library('email');
-        $this->email->from('your@example.com', 'Your Name');
+        $this->email->from($brandInfo['email'], $brandInfo['name']);
         $this->email->to($emailAddress);
         $this->email->subject('Email Test');
         $this->email->message($message);

@@ -19,6 +19,10 @@ if (!defined('BASEPATH'))
  */
 $config['base_url'] = '';
 
+$config['brandInfo'] = array(
+    'email' => 'support@spire.com',
+    'name' => 'Valeriy L.',
+);
 /*
   |--------------------------------------------------------------------------
   | Index File
