@@ -35,10 +35,10 @@ class Forgot_Password extends Controller
             $email = $this->input->post('user_email',true);
             $find = $this->users->checkEmailExistings($email);
             $message = "<p>You're receiving this e-mail because you requested a password for your user account at QRCodeReader app..</p>";
-            $message .= "<p>Your login is:".$email."</p>";
-            $message .= "<p>Your password is:".$find['user_password']."</p>";
+            $message .= "<p>Your login is: ".$email."</p>";
+            $message .= "<p>Your password is: ".$find['user_password']."</p>";
             $message .= "<p>Thanks for using our app.</p>";
-            $message .= "<center>The Spire team</center>";
+            $message .= "<p>The Spire team</p>";
             if($this->_sendNotification($email,$message))
             {
                 $this->output();
@@ -60,7 +60,7 @@ class Forgot_Password extends Controller
         $this->load->library('email');
         $this->email->from($brandInfo['email'], $brandInfo['name']);
         $this->email->to($emailAddress);
-        $this->email->subject('Email Test');
+        $this->email->subject('Requested password');
         $this->email->message($message);
         //$this->email->print_debugger();
         return $this->email->send();
